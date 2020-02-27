@@ -1,12 +1,9 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/bijeshos/goose/initialize"
+	"github.com/bijeshos/goose/cmd"
 )
 
 func main() {
-	fmt.Println("inside main")
-	initialize.Goose()
+	cmd.Execute()
 }
