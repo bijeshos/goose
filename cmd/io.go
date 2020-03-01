@@ -8,6 +8,7 @@ import (
 
 func init() {
 	rootCmd.AddCommand(ioCmd)
+	ioCmd.AddCommand(fileCmd)
 }
 
 var ioCmd = &cobra.Command{
@@ -16,5 +17,14 @@ var ioCmd = &cobra.Command{
 	Long:  `io related commands`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("executing io")
+	},
+}
+
+var fileCmd = &cobra.Command{
+	Use:   "file",
+	Short: "io:file related commands",
+	Long:  `io:file related commands`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("executing io:file")
 	},
 }
