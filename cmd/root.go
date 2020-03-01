@@ -38,10 +38,10 @@ func er(msg interface{}) {
 }
 
 func initConfig() {
-	fmt.Println("inside initConfig")
-	var conf string
-	conf, _ = rootCmd.Flags().GetString("config")
-	fmt.Println("config:", conf)
+	//fmt.Println("inside initConfig")
+	//var conf string
+	//conf, _ = rootCmd.Flags().GetString("config")
+	//fmt.Println("config:", conf)
 
 	if cfgFile != "" {
 		// Use config file from the flag.
