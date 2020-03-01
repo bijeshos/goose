@@ -38,7 +38,7 @@ var fileReadCmd = &cobra.Command{
 	Long:  `io:file:read related commands`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("executing io:file:read")
-		fileutil.Read()
+		fileutil.Read("/home/bos/1-bos/tmp/go-test")
 	},
 }
 
