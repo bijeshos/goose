@@ -6,5 +6,5 @@ import (
 
 //Read to read from dir
 func Read() {
-	fmt.Println("inside dirutil:read")
+	fmt.Println("inside fileutil:read")
 }
