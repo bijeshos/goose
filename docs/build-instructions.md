@@ -2,10 +2,10 @@
 
 - clone the repository
 
-- Run `go build -o go.examples github.com/bijeshos/goose`
+- Run `go build -o goose github.com/bijeshos/goose`
     - to build the project
 
-- Run `go install -o go.examples github.com/bijeshos/goose`
+- Run `go install -o goose github.com/bijeshos/goose`
     - to install the binaries
 
 - Run `./goose`
