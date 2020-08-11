@@ -44,20 +44,20 @@ func Read(srcDir string) []string {
 	return files
 }
 
-func CopyFile(srcFilePath, targetFilePath string) {
+func CopyFile(srcPath, targetPath string) {
 	//open source file
-	src, err := os.Open(srcFilePath)
+	src, err := os.Open(srcPath)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer src.Close()
 
 	//create sub directories if needed
-	targetSubDir := filepath.Dir(targetFilePath)
+	targetSubDir := filepath.Dir(targetPath)
 	dirutil.MkDirAll(targetSubDir)
 
 	//open target file
-	target, err := os.OpenFile(targetFilePath, os.O_RDWR|os.O_CREATE, 0666)
+	target, err := os.OpenFile(targetPath, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
