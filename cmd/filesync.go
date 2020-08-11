@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/bijeshos/goose/io/fileutil"
+	"github.com/bijeshos/goose/util/fileutil"
 
 	"github.com/spf13/cobra"
 )
@@ -15,29 +15,29 @@ func init() {
 }
 
 var backup = &cobra.Command{
-	Use:   "backup",
-	Short: "backup related commands",
-	Long:  `backup related commands`,
+	Use:   "file-sync",
+	Short: "files-ync related commands",
+	Long:  `files-ync related commands`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("executing backup")
+		fmt.Println("executing file-sync")
 	},
 }
 
 var primaryCmd = &cobra.Command{
 	Use:   "primary",
-	Short: "backup:primary related commands",
-	Long:  `backup:primary related commands`,
+	Short: "file-sync:primary related commands",
+	Long:  `file-sync:primary related commands`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("executing backup:primary")
+		fmt.Println("executing file-sync:primary")
 	},
 }
 
 var secondaryCmd = &cobra.Command{
 	Use:   "secondary",
-	Short: "backup:secondary:read related commands",
-	Long:  `backup:secondary:read related commands`,
+	Short: "filesync:secondary:read related commands",
+	Long:  `filesync:secondary:read related commands`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("executing io:file:secondary")
+		fmt.Println("executing util:file:secondary")
 		fileutil.Read("/home/bos/1-bos/tmp/go-test")
 	},
 }

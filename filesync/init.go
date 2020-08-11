@@ -1,19 +1,15 @@
-package backup
+package filesync
 
 import (
 	"fmt"
-	"github.com/bijeshos/goose/io/fileutil"
+	"github.com/bijeshos/goose/util/fileutil"
 	"path/filepath"
 	"strings"
 )
 
-func performPrimary(srcDir string, targetDir string) {
+func Perform(srcDir string, targetDir string) {
 	files := fileutil.Read(srcDir)
-
-	//dirutil.MkDirAll(targetDir)
-
 	for _, file := range files {
-
 		fmt.Println("copying: from: ", file)
 		fmt.Println("copying: to  : ", filepath.Join(targetDir, filepath.Base(file)))
 		relativePath := strings.Replace(file, srcDir, "", 1)
