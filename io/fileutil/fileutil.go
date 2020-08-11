@@ -12,35 +12,16 @@ import (
 //Read to read from dir
 func Read(srcDir string) []string {
 	fmt.Println("reading files from: ", srcDir)
-
 	var files []string
-	var dirs []string
-
 	err := filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
-		//fmt.Println("----")
-		if info.IsDir() {
-			//fmt.Println("dir: ", path)
-			dirs = append(dirs, path)
-		} else {
-			/*fmt.Println("file: ", path)
-			fmt.Println("size: ", info.Size(), "Bytes")
-			fmt.Println("modified time: ", info.ModTime())*/
+		if !info.IsDir() {
 			files = append(files, path)
 		}
-		/*fmt.Println("path: ", path)
-		fmt.Println("file-info: ", info)
-		if filepath.Ext(path) == "txt"{
-			return nil
-		}*/
-
 		return nil
 	})
 	if err != nil {
 		panic(err)
 	}
-	/*for _, file := range files {
-		fmt.Println(file)
-	}*/
 	return files
 }
 
