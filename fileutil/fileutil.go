@@ -2,7 +2,7 @@ package fileutil
 
 import (
 	"fmt"
-	"github.com/bijeshos/goose/util/dirutil"
+	"github.com/bijeshos/goose/dirutil"
 	"io"
 	"log"
 	"os"
