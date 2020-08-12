@@ -29,3 +29,16 @@ func MkDirAll(targetDir string) {
 		os.MkdirAll(targetDir, os.ModePerm)
 	}
 }
+
+//IsExist to check if the directory exists
+func IsExist(dir string) (bool, error) {
+	//check whether directory exists
+	_, err := os.Stat(dir)
+	if err != nil {
+		return false, err
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return false, nil
+}
