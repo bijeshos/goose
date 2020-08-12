@@ -2,7 +2,7 @@ package filesync
 
 import (
 	"fmt"
-	"github.com/bijeshos/goose/util/fileutil"
+	"github.com/bijeshos/goose/fileutil"
 	"path/filepath"
 	"strings"
 )

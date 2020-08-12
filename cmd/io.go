@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/bijeshos/goose/util/fileutil"
+	"github.com/bijeshos/goose/fileutil"
 
 	"github.com/spf13/cobra"
 )
