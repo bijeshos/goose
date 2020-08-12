@@ -42,3 +42,22 @@ func IsExist(dir string) (bool, error) {
 	}
 	return false, nil
 }
+
+//isSame to check if both directories are same
+func isSame(srcDir string, targetDir string) (bool, error) {
+
+	srcInfo, srcErr := os.Stat(srcDir)
+	if srcErr != nil {
+		return false, srcErr
+	}
+	targetInfo, targetErr := os.Stat(targetDir)
+	if targetErr != nil {
+		return false, targetErr
+	}
+	// check if source and target dirs are same
+	if os.SameFile(srcInfo, targetInfo) {
+		return true, nil
+	} else {
+		return false, nil
+	}
+}
