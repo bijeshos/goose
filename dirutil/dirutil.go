@@ -35,16 +35,17 @@ func IsExist(dir string) (bool, error) {
 	//check whether directory exists
 	_, err := os.Stat(dir)
 	if err != nil {
+		if os.IsNotExist(err) {
+			return false, nil
+		}
 		return false, err
 	}
-	if os.IsNotExist(err) {
-		return false, nil
-	}
-	return false, nil
+
+	return true, nil
 }
 
-//isSame to check if both directories are same
-func isSame(srcDir string, targetDir string) (bool, error) {
+//IsSame to check if both directories are same
+func IsSame(srcDir string, targetDir string) (bool, error) {
 
 	srcInfo, srcErr := os.Stat(srcDir)
 	if srcErr != nil {
