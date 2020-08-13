@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"fmt"
+	"github.com/bijeshos/goose/logwrap"
 
 	"github.com/spf13/cobra"
 )
@@ -15,6 +15,6 @@ var initCmd = &cobra.Command{
 	Short: "Initialize goose",
 	Long:  `Initialize goose with options`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("initializing goose")
+		logwrap.Infow("initializing goose")
 	},
 }

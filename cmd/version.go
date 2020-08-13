@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"fmt"
+	"github.com/bijeshos/goose/logwrap"
 
 	"github.com/spf13/cobra"
 )
@@ -15,6 +15,6 @@ var versionCmd = &cobra.Command{
 	Short: "Print the version number of goose",
 	Long:  `Print the version number of goose application`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("goose v0.0.1-alpha")
+		logwrap.Infow("goose v0.0.1-alpha")
 	},
 }
