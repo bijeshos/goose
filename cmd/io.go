@@ -1,9 +1,8 @@
 package cmd
 
 import (
-	"fmt"
-	"github.com/bijeshos/goose/fileutil"
-
+	"github.com/bijeshos/goose/dirutil"
+	"github.com/bijeshos/goose/logwrap"
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +18,7 @@ var ioCmd = &cobra.Command{
 	Short: "util related commands",
 	Long:  `util related commands`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("executing util")
+		logwrap.Infow("executing util")
 	},
 }
 
@@ -28,7 +27,7 @@ var fileCmd = &cobra.Command{
 	Short: "util:file related commands",
 	Long:  `util:file related commands`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("executing util:file")
+		logwrap.Infow("executing util:file")
 	},
 }
 
@@ -37,8 +36,8 @@ var fileReadCmd = &cobra.Command{
 	Short: "util:file:read related commands",
 	Long:  `util:file:read related commands`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("executing util:file:read")
-		fileutil.Read("/home/bos/1-bos/tmp/go-test")
+		logwrap.Infow("executing util:file:read")
+		dirutil.Read("/home/bos/1-bos/tmp/go-test")
 	},
 }
 
@@ -47,6 +46,6 @@ var dirCmd = &cobra.Command{
 	Short: "util:dir related commands",
 	Long:  `util:dir related commands`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("executing util:dir")
+		logwrap.Infow("executing util:dir")
 	},
 }
