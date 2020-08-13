@@ -1,14 +1,14 @@
 package dirutil
 
 import (
-	"fmt"
+	"github.com/bijeshos/goose/logwrap"
 	"os"
 	"path/filepath"
 )
 
 //Read to read from dir
 func Read(srcDir string) []string {
-	fmt.Println("reading files from: ", srcDir)
+	logwrap.Infow("reading files", "from", srcDir)
 	var files []string
 	err := filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
 		if !info.IsDir() {
@@ -25,7 +25,7 @@ func Read(srcDir string) []string {
 //MkDirAll to create directories
 func MkDirAll(targetDir string) {
 	if _, err := os.Stat(targetDir); os.IsNotExist(err) {
-		fmt.Println("creating directory: ", targetDir)
+		logwrap.Infow("creating directory", "dir", targetDir)
 		os.MkdirAll(targetDir, os.ModePerm)
 	}
 }
@@ -53,6 +53,9 @@ func IsSame(srcDir string, targetDir string) (bool, error) {
 	}
 	targetInfo, targetErr := os.Stat(targetDir)
 	if targetErr != nil {
+		if os.IsNotExist(targetErr) {
+			return false, nil
+		}
 		return false, targetErr
 	}
 	// check if source and target dirs are same
