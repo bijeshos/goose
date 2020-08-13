@@ -2,8 +2,8 @@ package fileutil
 
 import (
 	"github.com/bijeshos/goose/dirutil"
+	"github.com/bijeshos/goose/logwrap"
 	"io"
-	"log"
 	"os"
 	"path/filepath"
 )
@@ -12,7 +12,7 @@ func CopyFile(srcPath, targetPath string) {
 	//open source file
 	src, err := os.Open(srcPath)
 	if err != nil {
-		log.Fatal(err)
+		logwrap.Fatalw("error occurred: ", "error", err)
 	}
 	defer src.Close()
 
@@ -23,13 +23,13 @@ func CopyFile(srcPath, targetPath string) {
 	//open target file
 	target, err := os.OpenFile(targetPath, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
-		log.Fatal(err)
+		logwrap.Fatalw("error occurred: ", "error", err)
 	}
 	defer target.Close()
 
 	//perform copying
 	_, err = io.Copy(target, src)
 	if err != nil {
-		log.Fatal(err)
+		logwrap.Fatalw("error occurred: ", "error", err)
 	}
 }
