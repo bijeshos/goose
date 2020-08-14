@@ -14,6 +14,7 @@ func initZap() *zap.SugaredLogger {
 	cfg := zap.NewDevelopmentConfig()
 	cfg.OutputPaths = []string{
 		"./../.logs/goose.log", //todo: need to externalize the log file name
+		"stdout",
 	}
 	logger, err := cfg.Build()
 
