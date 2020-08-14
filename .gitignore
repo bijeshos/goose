@@ -16,4 +16,9 @@
 
 .idea
 
+#goose binary file
 goose
+goose.exe
+
+# app .logs files
+.logs
