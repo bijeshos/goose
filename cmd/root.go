@@ -12,11 +12,10 @@ import (
 var (
 	// Used for flags.
 	cfgFile string
-
 	rootCmd = &cobra.Command{
 		Use:   "goose",
 		Short: "A utility program",
-		Long:  `A utility program written in Go`,
+		Long:  `A utility program`,
 	}
 )
 
