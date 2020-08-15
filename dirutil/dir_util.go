@@ -1,14 +1,14 @@
 package dirutil
 
 import (
-	"github.com/bijeshos/goose/logwrap"
+	"go.uber.org/zap"
 	"os"
 	"path/filepath"
 )
 
 //Read to read from dir
 func Read(srcDir string) []string {
-	logwrap.Infow("reading files", "from", srcDir)
+	zap.S().Infow("reading files", "from", srcDir)
 	var files []string
 	err := filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
 		if !info.IsDir() {
@@ -25,7 +25,7 @@ func Read(srcDir string) []string {
 //MkDirAll to create directories
 func MkDirAll(targetDir string) {
 	if _, err := os.Stat(targetDir); os.IsNotExist(err) {
-		logwrap.Infow("creating directory", "dir", targetDir)
+		zap.S().Infow("creating directory", "dir", targetDir)
 		os.MkdirAll(targetDir, os.ModePerm)
 	}
 }
