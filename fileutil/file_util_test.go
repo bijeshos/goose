@@ -4,7 +4,8 @@ import "testing"
 
 func TestRead(t *testing.T) {
 
-	Read(".")
+	//Read(".")
+	//placeholder
 
 	got := 2
 	if got != 1 {
