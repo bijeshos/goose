@@ -10,13 +10,13 @@ import (
 
 func Perform(srcDir string, targetDir string) {
 	zap.S().Infow("initiating sync")
-	validateSourceDir(srcDir)
-	validateSourceAndTargetDir(srcDir, targetDir)
+	checkSrcDirExists(srcDir)
+	checkSrcAndTargetDirDiffer(srcDir, targetDir)
 	copyFiles(srcDir, targetDir)
 
 }
 
-func validateSourceDir(srcDir string) {
+func checkSrcDirExists(srcDir string) {
 	//check whether source directory exists
 	dirExists, err := dirutil.IsExist(srcDir)
 	if err != nil {
@@ -27,7 +27,7 @@ func validateSourceDir(srcDir string) {
 	}
 }
 
-func validateSourceAndTargetDir(srcDir string, targetDir string) {
+func checkSrcAndTargetDirDiffer(srcDir string, targetDir string) {
 	//check whether source and target directories are same
 	dirSame, err := dirutil.IsSame(srcDir, targetDir)
 	if err != nil {
