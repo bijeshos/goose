@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 //CreateFile
@@ -18,7 +19,7 @@ func CreateFile(targetDir, fileName string) {
 }
 
 //CopyFile
-func CopyFile(srcPath, targetPath string) {
+func CopyFile(srcPath, targetPath string, forceReplace bool) {
 	//open source file
 	src, err := os.Open(srcPath)
 	if err != nil {
@@ -36,18 +37,47 @@ func CopyFile(srcPath, targetPath string) {
 		zap.S().Fatalw("error occurred: ", "error", err)
 	}
 	defer target.Close()
+	var proceedCopy bool = false
 
-	if preValidation(srcPath, targetPath) {
+	if forceReplace {
+		proceedCopy = true
+	} else {
+		isSame, _ := isSameMetadata(srcPath, targetPath)
+		proceedCopy = !isSame
+	}
+	if proceedCopy {
 		//perform copying
 		_, err = io.Copy(target, src)
 		if err != nil {
 			zap.S().Fatalw("error occurred: ", "error", err)
 		}
+	} else {
+		zap.S().Debugw("Skipping copying", "file", srcPath, "reason", "Another file with same name and size exists at target")
 	}
 
 }
 
-func preValidation(srcFilePath string, targetFilePath string) bool {
+func isSameMetadata(srcFilePath string, targetFilePath string) (bool, error) {
+	srcFileInfo, srcErr := os.Stat(srcFilePath)
+	targetFileInfo, targetErr := os.Stat(targetFilePath)
 
-	return true //todo
+	if srcErr != nil {
+		return false, srcErr
+	}
+
+	//zap.S().Debugw("src file", "info", srcFileInfo)
+
+	if targetErr != nil {
+		if os.IsNotExist(targetErr) {
+			return false, targetErr
+		}
+	}
+	//zap.S().Debugw("target file", "info", targetFileInfo)
+
+	if strings.Compare(srcFileInfo.Name(), targetFileInfo.Name()) == 0 && srcFileInfo.Size() == targetFileInfo.Size() {
+		return true, nil
+	} else {
+		return false, nil
+	}
+
 }
