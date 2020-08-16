@@ -45,7 +45,7 @@ func copyFiles(srcDir string, targetDir string) {
 		zap.S().Infow("copying", "to", filepath.Join(targetDir, filepath.Base(file)))
 		relativePath := strings.Replace(file, srcDir, "", 1)
 		targetPath := filepath.Join(targetDir, relativePath)
-		fileutil.CopyFile(file, targetPath)
+		fileutil.CopyFile(file, targetPath, false)
 		zap.S().Infow("copy completed")
 		zap.S().Infow("------")
 	}
