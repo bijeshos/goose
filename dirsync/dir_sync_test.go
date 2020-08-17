@@ -1,4 +1,4 @@
-package filesync
+package dirsync
 
 import (
 	"fmt"

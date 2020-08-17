@@ -1,4 +1,4 @@
-package filesync
+package dirsync
 
 import (
 	"github.com/bijeshos/goose/dirutil"
@@ -9,7 +9,8 @@ import (
 )
 
 func Perform(srcDir string, targetDir string) {
-	zap.S().Infow("initiating sync")
+	zap.S().Infow("initiating directory sync", "source", srcDir, "target", targetDir)
+
 	checkSrcDirExists(srcDir)
 	checkSrcAndTargetDirDiffer(srcDir, targetDir)
 	copyFiles(srcDir, targetDir)
