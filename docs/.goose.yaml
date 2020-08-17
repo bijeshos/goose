@@ -1,0 +1,18 @@
+common:
+    log:
+        dir: /home/bos/.goose/logs
+        file: goose.log
+        level: debug
+sync:
+    dir:
+        src: /home/bos/1-bos/tmp/test/goose/src-1
+        target: /home/bos/1-bos/tmp/test/goose/target-1
+    flag:
+        rearrange:
+            target: false
+        replace:
+            force: false
+        trial:
+            enabled: false
+
+

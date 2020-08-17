@@ -20,6 +20,7 @@ func CreateFile(targetDir, fileName string) {
 
 //CopyFile
 func CopyFile(srcPath, targetPath string, forceReplace bool) {
+
 	//open source file
 	src, err := os.Open(srcPath)
 	if err != nil {
@@ -46,13 +47,18 @@ func CopyFile(srcPath, targetPath string, forceReplace bool) {
 		proceedCopy = !isSame
 	}
 	if proceedCopy {
+		zap.S().Infow("copying", "from", srcPath)
+		zap.S().Infow("copying", "to", targetPath)
+
 		//perform copying
 		_, err = io.Copy(target, src)
 		if err != nil {
 			zap.S().Fatalw("error occurred: ", "error", err)
 		}
+		zap.S().Infow("copy completed")
+		zap.S().Infow("------")
 	} else {
-		zap.S().Debugw("Skipping copying", "file", srcPath, "reason", "Another file with same name and size exists at target")
+		zap.S().Debugw("Skipping copy", "file", srcPath, "reason", "Another file with same name and size exists at target")
 	}
 
 }
