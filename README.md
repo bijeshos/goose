@@ -1,6 +1,6 @@
 # Goose
 A utility program written in Go
-
+ 
 # Build Instructions
 - Clone the repository
 - Build the project as follows (choose any):
@@ -22,8 +22,9 @@ A utility program written in Go
 
 # Commands
 
-- `goose sync dir`
-    - This will sync source and target directories
+- `$ goose sync dir`
+    - This will sync source directory with target directory
+    - Files from source directory would be copied to target directory
 
 
 

@@ -1,6 +1,7 @@
 package fileutil
 
 import (
+	"bufio"
 	"github.com/bijeshos/goose/dirutil"
 	"go.uber.org/zap"
 	"io"
@@ -47,9 +48,7 @@ func CopyFile(srcPath, targetPath string, forceReplace bool) {
 		proceedCopy = !isSame
 	}
 	if proceedCopy {
-		zap.S().Infow("copying", "from", srcPath)
-		zap.S().Infow("copying", "to", targetPath)
-
+		zap.S().Infow("copying", "from", srcPath, "to", targetPath)
 		//perform copying
 		_, err = io.Copy(target, src)
 		if err != nil {
@@ -86,4 +85,24 @@ func isSameMetadata(srcFilePath string, targetFilePath string) (bool, error) {
 		return false, nil
 	}
 
+}
+
+func ReadFile(filePath string) []string {
+	file, err := os.Open(filePath)
+	if err != nil {
+		zap.S().Fatalw("error occurred: ", "error", err)
+	}
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	//fmt.Println(lines)
+	if err := scanner.Err(); err != nil {
+		zap.S().Fatalw("error occurred: ", "error", err)
+	}
+	return lines
 }
