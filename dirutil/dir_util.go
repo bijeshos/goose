@@ -1,16 +1,21 @@
 package dirutil
 
 import (
+	"github.com/bijeshos/goose/arrayutil"
 	"go.uber.org/zap"
 	"os"
 	"path/filepath"
 )
 
 //Read to read from dir
-func Read(srcDir string) []string {
+func Read(srcDir string, ignoreList []string) []string {
 	zap.S().Infow("reading files", "from", srcDir)
 	var files []string
 	err := filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
+		if info.IsDir() && arrayutil.IsPresent(ignoreList, info.Name()) {
+			zap.S().Infow("skipping dir", "dir name", info.Name())
+			return filepath.SkipDir
+		}
 		if !info.IsDir() {
 			files = append(files, path)
 		}
