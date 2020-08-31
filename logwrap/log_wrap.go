@@ -8,6 +8,7 @@ import (
 )
 
 func InitZapLogger(logDir string, logFile string) *zap.SugaredLogger {
+	log.Println("initializing zap logger")
 	fileutil.CreateFile(logDir, logFile)
 	//configure output log file
 	cfg := zap.NewDevelopmentConfig()
