@@ -39,8 +39,17 @@ func checkSrcAndTargetDirDiffer(srcDir string, targetDir string) {
 }
 
 func copyFiles(srcDir string, targetDir string) {
-	ignoreList := fileutil.ReadFile(viper.GetString("sync.ignore-file-list"))
-	files := dirutil.Read(srcDir, ignoreList)
+	ignoreFileName := viper.GetString("sync.ignore-file-list")
+	ignoreList, fileReadErr := fileutil.ReadFile(ignoreFileName)
+	if fileReadErr != nil {
+		zap.S().Errorw("Error occurred while reading ignore file", fileReadErr)
+	}
+
+	files, dirReadErr := dirutil.Read(srcDir, ignoreList)
+	if dirReadErr != nil {
+		zap.S().Fatalw("Error occurred while reading src dir", "error", dirReadErr)
+	}
+
 	for _, file := range files {
 		relativePath := strings.Replace(file, srcDir, "", 1)
 		targetPath := filepath.Join(targetDir, relativePath)
