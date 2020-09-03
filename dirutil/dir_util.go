@@ -8,12 +8,12 @@ import (
 )
 
 //Read to read from dir
-func Read(srcDir string, ignoreList []string) []string {
+func Read(srcDir string, ignoreList []string) ([]string, error) {
 	zap.S().Infow("reading files", "from", srcDir)
 	var files []string
 	err := filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() && arrayutil.IsPresent(ignoreList, info.Name()) {
-			zap.S().Infow("skipping dir", "dir name", info.Name())
+			zap.S().Infow("ignoring dir", "dir name", info.Name())
 			return filepath.SkipDir
 		}
 		if !info.IsDir() {
@@ -22,17 +22,27 @@ func Read(srcDir string, ignoreList []string) []string {
 		return nil
 	})
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return files
+	return files, nil
 }
 
 //MkDirAll to create directories
-func MkDirAll(targetDir string) {
-	if _, err := os.Stat(targetDir); os.IsNotExist(err) {
-		zap.S().Infow("creating directory", "dir", targetDir)
-		os.MkdirAll(targetDir, os.ModePerm)
+func MkDirAll(targetDir string) error {
+	_, err := os.Stat(targetDir)
+	if err != nil {
+		return err
 	}
+
+	if os.IsNotExist(err) {
+		zap.S().Infow("creating directory", "dir", targetDir)
+		err := os.MkdirAll(targetDir, os.ModePerm)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 //IsExist to check if the directory exists
