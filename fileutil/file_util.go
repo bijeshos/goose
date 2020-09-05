@@ -11,21 +11,24 @@ import (
 )
 
 //CreateFile
-func CreateFile(targetDir, fileName string) {
+func CreateFile(targetDir, fileName string) error {
 	dirutil.MkDirAll(targetDir)
 	_, err := os.OpenFile(filepath.Join(targetDir, fileName), os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
-		zap.S().Fatalw("error occurred: ", "error", err)
+		//zap.S().Fatalw("error occurred: ", "error", err)
+		return err
 	}
+	return nil
 }
 
 //CopyFile
-func CopyFile(srcPath, targetPath string, forceReplace bool) {
+func CopyFile(srcPath, targetPath string, forceReplace bool) error {
 
 	//open source file
 	src, err := os.Open(srcPath)
 	if err != nil {
-		zap.S().Fatalw("error occurred: ", "error", err)
+		//zap.S().Errorw("error occurred: ", "error", err)
+		return err
 	}
 	defer src.Close()
 
@@ -36,7 +39,8 @@ func CopyFile(srcPath, targetPath string, forceReplace bool) {
 	//open target file
 	target, err := os.OpenFile(targetPath, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
-		zap.S().Fatalw("error occurred: ", "error", err)
+		//zap.S().Errorw("error occurred: ", "error", err)
+		return err
 	}
 	defer target.Close()
 	var proceedCopy bool = false
@@ -52,14 +56,15 @@ func CopyFile(srcPath, targetPath string, forceReplace bool) {
 		//perform copying
 		_, err = io.Copy(target, src)
 		if err != nil {
-			zap.S().Fatalw("error occurred: ", "error", err)
+			//zap.S().Errorw("error occurred: ", "error", err)
+			return err
 		}
 		zap.S().Infow("copy completed")
 		zap.S().Infow("------")
 	} else {
 		zap.S().Debugw("Skipping copy", "file", srcPath, "reason", "Another file with same name and size exists at target")
 	}
-
+	return nil
 }
 
 func isSameMetadata(srcFilePath string, targetFilePath string) (bool, error) {
@@ -87,10 +92,11 @@ func isSameMetadata(srcFilePath string, targetFilePath string) (bool, error) {
 
 }
 
-func ReadFile(filePath string) []string {
+func ReadFile(filePath string) ([]string, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
-		zap.S().Fatalw("error occurred: ", "error", err)
+		//zap.S().Errorw("error occurred: ", "error", err)
+		return nil, err
 	}
 	defer file.Close()
 
@@ -102,7 +108,8 @@ func ReadFile(filePath string) []string {
 
 	//fmt.Println(lines)
 	if err := scanner.Err(); err != nil {
-		zap.S().Fatalw("error occurred: ", "error", err)
+		//zap.S().Errorw("error occurred: ", "error", err)
+		return nil, err
 	}
-	return lines
+	return lines, nil
 }
