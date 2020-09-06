@@ -17,7 +17,6 @@ func InitZapLogger(logDir string, logFile string) *zap.SugaredLogger {
 		"stdout",
 	}
 	logger, err := cfg.Build()
-	//"./../.logs/goose.log", //todo: need to externalize the log file name
 	if err != nil {
 		log.Fatal("error occurred while creating log", err)
 	}
