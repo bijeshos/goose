@@ -12,8 +12,12 @@ import (
 
 //CreateFile
 func CreateFile(targetDir, fileName string) error {
-	dirutil.MkDirAll(targetDir)
-	_, err := os.OpenFile(filepath.Join(targetDir, fileName), os.O_RDWR|os.O_CREATE, 0666)
+	dirErr := dirutil.MkDirAll(targetDir)
+	if dirErr != nil {
+		return dirErr
+	}
+	//_, err := os.OpenFile(filepath.Join(targetDir, fileName), os.O_RDWR|os.O_CREATE, 0666)
+	_, err := os.Create(filepath.Join(targetDir, fileName))
 	if err != nil {
 		//zap.S().Fatalw("error occurred: ", "error", err)
 		return err
