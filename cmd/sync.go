@@ -34,5 +34,6 @@ var syncDirCommand = &cobra.Command{
 		srcDir := viper.GetString("sync.dir.src")
 		targetDir := viper.GetString("sync.dir.target")
 		dirsync.Perform(srcDir, targetDir)
+		zap.S().Infow("completed execution")
 	},
 }

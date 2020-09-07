@@ -31,17 +31,16 @@ func Read(srcDir string, ignoreList []string) ([]string, error) {
 func MkDirAll(targetDir string) error {
 	_, err := os.Stat(targetDir)
 	if err != nil {
-		return err
-	}
-
-	if os.IsNotExist(err) {
-		zap.S().Infow("creating directory", "dir", targetDir)
-		err := os.MkdirAll(targetDir, os.ModePerm)
-		if err != nil {
+		if os.IsNotExist(err) {
+			zap.S().Infow("creating directory", "dir", targetDir)
+			err := os.MkdirAll(targetDir, os.ModePerm)
+			if err != nil {
+				return err
+			}
+		} else {
 			return err
 		}
 	}
-
 	return nil
 }
 

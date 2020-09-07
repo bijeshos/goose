@@ -3,10 +3,19 @@ A utility program written in Go
  
 # Build Instructions
 - Clone the repository
-- Build the project as follows (choose any):
+- Grant execute permission for the build script
+    - On Linux
+        - `chmod 775 build.sh`
+- Execute build script
+    - On Linux
+        - `./build.sh`
+             
+- For creating the binary without using build script, choose any of the following options:
     - `go build -o goose`
     - `env GOOS=windows GOARCH=amd64 go build -o goose.exe` (for Windows 64 bit)
     - `env GOOS=linux GOARCH=amd64 go build -o goose` (for Linux 64 bit)
+    
+    
 - Install the binaries as follows
     - `go install -o goose github.com/bijeshos/goose`
 - to run the binary    
