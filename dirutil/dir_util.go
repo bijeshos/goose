@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 )
 
-//Read to read from dir
-func Read(srcDir string, ignoreList []string) ([]string, error) {
+//ReadFiles to read from dir
+func ReadFiles(srcDir string, ignoreList []string) ([]string, error) {
 	zap.S().Infow("reading files", "from", srcDir)
 	var files []string
 	err := filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
@@ -26,6 +26,43 @@ func Read(srcDir string, ignoreList []string) ([]string, error) {
 	}
 	return files, nil
 }
+
+func ReadDirs(srcDir string, ignoreList []string) ([]string, error) {
+	zap.S().Infow("reading sub directories", "from", srcDir)
+	var dirs []string
+	err := filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
+		if info.IsDir() && arrayutil.IsPresent(ignoreList, info.Name()) {
+			zap.S().Infow("ignoring dir", "dir name", info.Name())
+			return filepath.SkipDir
+		}
+		if info.IsDir() && info.Name() != srcDir {
+			dirs = append(dirs, path)
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return dirs, nil
+}
+
+//ReadAll to read and dir from source dir
+/*func ReadAll(srcDir string, ignoreList []string) ([]string, error) {
+	zap.S().Infow("reading files", "from", srcDir)
+	var files []string
+	err := filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
+		if info.IsDir() && arrayutil.IsPresent(ignoreList, info.Name()) {
+			zap.S().Infow("ignoring dir", "dir name", info.Name())
+			return filepath.SkipDir
+		}
+		files = append(files, path)
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return files, nil
+}*/
 
 //MkDirAll to create directories
 func MkDirAll(targetDir string) error {
