@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/bijeshos/goose/dirsync"
-	"github.com/bijeshos/goose/logwrap"
+	"github.com/bijeshos/goose/dirops"
+	"github.com/bijeshos/goose/gooseinit"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -24,7 +24,7 @@ var syncDirCommand = &cobra.Command{
 	Short: "sync:dir related commands",
 	Long:  `sync:dir related commands`,
 	Run: func(cmd *cobra.Command, args []string) {
-		logwrap.InitZapLogger(viper.GetString("common.log.dir"), viper.GetString("common.log.file"))
+		gooseinit.ZapLogger(viper.GetString("common.log.dir"), viper.GetString("common.log.file"))
 		for _, k := range viper.AllKeys() {
 			zap.S().Debugw("config", k, viper.GetString(k))
 			//fmt.Println(viper.GetString(k))
@@ -33,7 +33,7 @@ var syncDirCommand = &cobra.Command{
 		zap.S().Infow("executing sync:dir")
 		srcDir := viper.GetString("sync.dir.src")
 		targetDir := viper.GetString("sync.dir.target")
-		dirsync.Perform(srcDir, targetDir)
+		dirops.Sync(srcDir, targetDir)
 		zap.S().Infow("completed execution")
 	},
 }
