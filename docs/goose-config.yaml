@@ -14,5 +14,15 @@ sync:
             force: false
         trial:
             enabled: false
-
+move:
+    dir:
+        src: /home/bos/1-bos/tmp/test/goose/src-2
+        target: /home/bos/1-bos/tmp/test/goose/target-2
+    flag:
+        rearrange:
+            target: false
+        replace:
+            force: false
+        trial:
+            enabled: false
 
