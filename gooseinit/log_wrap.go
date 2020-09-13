@@ -1,4 +1,4 @@
-package logwrap
+package gooseinit
 
 import (
 	"github.com/bijeshos/goose/fileutil"
@@ -7,7 +7,10 @@ import (
 	"path/filepath"
 )
 
-func InitZapLogger(logDir string, logFile string) *zap.SugaredLogger {
+/*func init(){
+	log.Println("Executing gooseinit:init")
+}*/
+func ZapLogger(logDir string, logFile string) *zap.SugaredLogger {
 	log.Println("initializing zap logger")
 	fileutil.CreateFile(logDir, logFile)
 	//configure output log file

@@ -1,4 +1,4 @@
-package dirsync
+package dirops
 
 import (
 	"github.com/bijeshos/goose/dirutil"
@@ -9,7 +9,15 @@ import (
 	"strings"
 )
 
-func Perform(srcDir string, targetDir string) {
+func Move(srcDir string, targetDir string) {
+	zap.S().Infow("initiating directory move", "source", srcDir, "target", targetDir)
+	checkSrcDirExists(srcDir)
+	checkSrcAndTargetDirDiffer(srcDir, targetDir)
+	moveFiles(srcDir, targetDir)
+	//deleteEmptyDirs(srcDir)
+}
+
+func Sync(srcDir string, targetDir string) {
 	zap.S().Infow("initiating directory sync", "source", srcDir, "target", targetDir)
 	checkSrcDirExists(srcDir)
 	checkSrcAndTargetDirDiffer(srcDir, targetDir)
@@ -42,15 +50,10 @@ func checkSrcAndTargetDirDiffer(srcDir string, targetDir string) {
 
 func copyFiles(srcDir string, targetDir string) {
 
-	zap.S().Infow("reading ignore file list")
-	ignoreFileName := viper.GetString("sync.ignore-file-list")
-	ignoreList, fileReadErr := fileutil.ReadFile(ignoreFileName)
-	if fileReadErr != nil {
-		zap.S().Errorw("Error occurred while reading ignore file", fileReadErr)
-	}
+	ignoreList := getIgnoreDirs()
 
 	zap.S().Infow("retrieving file details from source directory")
-	files, dirReadErr := dirutil.Read(srcDir, ignoreList)
+	files, dirReadErr := dirutil.ReadFiles(srcDir, ignoreList)
 	if dirReadErr != nil {
 		zap.S().Fatalw("Error occurred while reading src dir", "error", dirReadErr)
 	}
@@ -63,3 +66,36 @@ func copyFiles(srcDir string, targetDir string) {
 
 	}
 }
+
+func moveFiles(srcDir string, targetDir string) {
+	ignoreList := getIgnoreDirs()
+	zap.S().Infow("retrieving file details from source directory")
+	files, dirReadErr := dirutil.ReadFiles(srcDir, ignoreList)
+	if dirReadErr != nil {
+		zap.S().Fatalw("Error occurred while reading src dir", "error", dirReadErr)
+	}
+	zap.S().Infow("initiating file moving")
+	for _, file := range files {
+		relativePath := strings.Replace(file, srcDir, "", 1)
+		targetPath := filepath.Join(targetDir, relativePath)
+		fileutil.MoveFile(file, targetPath, false)
+
+	}
+}
+
+func getIgnoreDirs() []string {
+	zap.S().Infow("reading ignore file list")
+	ignoreFileName := viper.GetString("sync.ignore-file-list")
+	ignoreList, fileReadErr := fileutil.ReadFile(ignoreFileName)
+	if fileReadErr != nil {
+		zap.S().Errorw("Error occurred while reading ignore file", fileReadErr)
+	}
+	return ignoreList
+
+}
+
+/*func deleteEmptyDirs(srcDir string) {
+	ignoreList := getIgnoreDirs()
+	dirList, _ := dirutil.ReadDirs(srcDir, ignoreList)
+	sort.Reverse(dirList)
+}*/

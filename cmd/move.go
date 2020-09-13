@@ -9,31 +9,30 @@ import (
 )
 
 func init() {
-	rootCmd.AddCommand(syncCmd)
-	syncCmd.AddCommand(syncDirCommand)
+	rootCmd.AddCommand(moveCmd)
+	moveCmd.AddCommand(moveDirCommand)
 }
 
-var syncCmd = &cobra.Command{
-	Use:   "sync",
-	Short: "sync related commands",
-	Long:  `sync related commands`,
+var moveCmd = &cobra.Command{
+	Use:   "move",
+	Short: "move related commands",
+	Long:  `move related commands`,
 }
 
-var syncDirCommand = &cobra.Command{
+var moveDirCommand = &cobra.Command{
 	Use:   "dir",
-	Short: "sync:dir related commands",
-	Long:  `sync:dir related commands`,
+	Short: "move:dir related commands",
+	Long:  `move:dir related commands`,
 	Run: func(cmd *cobra.Command, args []string) {
 		gooseinit.ZapLogger(viper.GetString("common.log.dir"), viper.GetString("common.log.file"))
 		for _, k := range viper.AllKeys() {
 			zap.S().Debugw("config", k, viper.GetString(k))
 			//fmt.Println(viper.GetString(k))
 		}
-
-		zap.S().Infow("executing sync:dir")
-		srcDir := viper.GetString("sync.dir.src")
-		targetDir := viper.GetString("sync.dir.target")
-		dirops.Sync(srcDir, targetDir)
+		zap.S().Infow("executing move:dir")
+		srcDir := viper.GetString("move.dir.src")
+		targetDir := viper.GetString("move.dir.target")
+		dirops.Move(srcDir, targetDir)
 		zap.S().Infow("completed execution")
 	},
 }

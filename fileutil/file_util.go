@@ -71,6 +71,36 @@ func CopyFile(srcPath, targetPath string, forceReplace bool) error {
 	return nil
 }
 
+//MoveFile
+func MoveFile(srcPath, targetPath string, forceReplace bool) error {
+
+	//create sub directories at target if needed
+	targetSubDir := filepath.Dir(targetPath)
+	dirutil.MkDirAll(targetSubDir)
+
+	var proceedCopy = false
+
+	if forceReplace {
+		proceedCopy = true
+	} else {
+		isSame, _ := isSameMetadata(srcPath, targetPath)
+		proceedCopy = !isSame
+	}
+	if proceedCopy {
+		zap.S().Infow("moving", "from", srcPath, "to", targetPath)
+		//perform move
+		err := os.Rename(srcPath, targetPath)
+		if err != nil {
+			return err
+		}
+		zap.S().Infow("move completed")
+		zap.S().Infow("------")
+	} else {
+		zap.S().Debugw("Skipping move", "file", srcPath, "reason", "Another file with same name and size exists at target")
+	}
+	return nil
+}
+
 func isSameMetadata(srcFilePath string, targetFilePath string) (bool, error) {
 	srcFileInfo, srcErr := os.Stat(srcFilePath)
 	targetFileInfo, targetErr := os.Stat(targetFilePath)
