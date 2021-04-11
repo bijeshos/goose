@@ -1,8 +1,8 @@
 package dirops
 
 import (
-	"github.com/bijeshos/goose/dirutil"
-	"github.com/bijeshos/goose/fileutil"
+	gdu "github.com/bijeshos/guppy/dirutil"
+	gfu "github.com/bijeshos/guppy/fileutil"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"path/filepath"
@@ -27,7 +27,7 @@ func Sync(srcDir string, targetDir string) {
 func checkSrcDirExists(srcDir string) {
 	zap.S().Infow("verifying existence of source directory")
 	//check whether source directory exists
-	dirExists, err := dirutil.IsExist(srcDir)
+	dirExists, err := gdu.IsExist(srcDir)
 	if err != nil {
 		zap.S().Fatalw("error occurred: ", "error", err)
 	}
@@ -39,7 +39,7 @@ func checkSrcDirExists(srcDir string) {
 func checkSrcAndTargetDirDiffer(srcDir string, targetDir string) {
 	zap.S().Infow("verifying source and target directories are different")
 	//check whether source and target directories are same
-	dirSame, err := dirutil.IsSame(srcDir, targetDir)
+	dirSame, err := gdu.IsSame(srcDir, targetDir)
 	if err != nil {
 		zap.S().Fatalw("error occurred: ", "error", err)
 	}
@@ -53,7 +53,7 @@ func copyFiles(srcDir string, targetDir string) {
 	ignoreList := getIgnoreDirs()
 
 	zap.S().Infow("retrieving file details from source directory")
-	files, dirReadErr := dirutil.ReadFiles(srcDir, ignoreList)
+	files, dirReadErr := gdu.ReadFiles(srcDir, ignoreList)
 	if dirReadErr != nil {
 		zap.S().Fatalw("Error occurred while reading src dir", "error", dirReadErr)
 	}
@@ -62,7 +62,7 @@ func copyFiles(srcDir string, targetDir string) {
 	for _, file := range files {
 		relativePath := strings.Replace(file, srcDir, "", 1)
 		targetPath := filepath.Join(targetDir, relativePath)
-		fileutil.CopyFile(file, targetPath, false)
+		gfu.CopyFile(file, targetPath, false)
 
 	}
 }
@@ -70,7 +70,7 @@ func copyFiles(srcDir string, targetDir string) {
 func moveFiles(srcDir string, targetDir string) {
 	ignoreList := getIgnoreDirs()
 	zap.S().Infow("retrieving file details from source directory")
-	files, dirReadErr := dirutil.ReadFiles(srcDir, ignoreList)
+	files, dirReadErr := gdu.ReadFiles(srcDir, ignoreList)
 	if dirReadErr != nil {
 		zap.S().Fatalw("Error occurred while reading src dir", "error", dirReadErr)
 	}
@@ -78,7 +78,7 @@ func moveFiles(srcDir string, targetDir string) {
 	for _, file := range files {
 		relativePath := strings.Replace(file, srcDir, "", 1)
 		targetPath := filepath.Join(targetDir, relativePath)
-		fileutil.MoveFile(file, targetPath, false)
+		gfu.MoveFile(file, targetPath, false)
 
 	}
 }
@@ -86,7 +86,7 @@ func moveFiles(srcDir string, targetDir string) {
 func getIgnoreDirs() []string {
 	zap.S().Infow("reading ignore file list")
 	ignoreFileName := viper.GetString("sync.ignore-file-list")
-	ignoreList, fileReadErr := fileutil.ReadFile(ignoreFileName)
+	ignoreList, fileReadErr := gfu.ReadFileContent(ignoreFileName)
 	if fileReadErr != nil {
 		zap.S().Errorw("Error occurred while reading ignore file", fileReadErr)
 	}
@@ -96,6 +96,6 @@ func getIgnoreDirs() []string {
 
 /*func deleteEmptyDirs(srcDir string) {
 	ignoreList := getIgnoreDirs()
-	dirList, _ := dirutil.ReadDirs(srcDir, ignoreList)
+	dirList, _ := gdu.ReadDirs(srcDir, ignoreList)
 	sort.Reverse(dirList)
 }*/
