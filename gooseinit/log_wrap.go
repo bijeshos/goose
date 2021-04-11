@@ -1,18 +1,15 @@
 package gooseinit
 
 import (
-	"github.com/bijeshos/goose/fileutil"
+	gfu "github.com/bijeshos/guppy/fileutil"
 	"go.uber.org/zap"
 	"log"
 	"path/filepath"
 )
 
-/*func init(){
-	log.Println("Executing gooseinit:init")
-}*/
 func ZapLogger(logDir string, logFile string) *zap.SugaredLogger {
 	log.Println("initializing zap logger")
-	fileutil.CreateFile(logDir, logFile)
+	gfu.CreateFile(logDir, logFile)
 	//configure output log file
 	cfg := zap.NewDevelopmentConfig()
 	cfg.OutputPaths = []string{
